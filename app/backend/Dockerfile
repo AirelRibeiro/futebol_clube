@@ -6,7 +6,6 @@ EXPOSE 3001
 
 COPY . .
 
-RUN ["npm", "install"]
-RUN ["npm", "run", "build"]
+RUN npm install && npm run build
 
 ENTRYPOINT ["npm", "start"]
