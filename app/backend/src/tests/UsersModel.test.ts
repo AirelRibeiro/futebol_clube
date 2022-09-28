@@ -1,5 +1,5 @@
 import UserModel from '../database/models/UserModel';
-const { expect } = require('chai')
+import { expect } from 'chai';
 
 describe('Testa o UsersModel', () => {
   const user = new UserModel();  
