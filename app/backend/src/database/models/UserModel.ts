@@ -2,7 +2,7 @@ import { DataTypes, Model } from 'sequelize';
 import db from '.';
 
 class User extends Model {
-  public id?: number;
+  public id: number;
   public username: string;
   public role: string;
   public email: string;
@@ -37,7 +37,7 @@ User.init(
   {
     underscored: true,
     sequelize: db,
-    modelName: 'User',
+    modelName: 'users',
     timestamps: false,
   },
 );
