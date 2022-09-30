@@ -1,1 +1,3 @@
 sequelize-test-helpers
+joi
+express-async-errors
