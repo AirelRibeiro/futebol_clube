@@ -43,3 +43,36 @@ describe('Rota de login', () => {
       chai.expect(response.body).to.have.property('token');
     });
   });
+
+  describe('POST se um dos campos não for enviado', () => {
+
+    before(() => {
+      Sinon.stub(User, 'findOne').resolves({
+        id: 1,
+        username: 'Admin',
+        role: 'admin',
+        email: 'admin@admin.com',
+        password: '$2a$08$xi.Hxk1czAO0nZR..B393u10aED0RQ1N3PAEXQ7HxtLjKPEZBu.PW'
+      } as User);
+    });
+
+    after(() => {
+      Sinon.restore();
+    });
+
+    it('Retornar erro de status 400 e mensagem de erro se o email não for enviado', async () => {
+      const response = await chai.request(app).post('/login').send(userWithoutEmail);
+      
+      chai.expect(response.status).to.equal(400);
+      chai.expect(response.body).to.have.property('message');
+      chai.expect(response.body).to.deep.equal({ message: 'All fields must be filled' });
+    });
+
+    it('Retornar erro de status 400 e mensagem de erro se a password não for enviada', async () => {
+      const response = await chai.request(app).post('/login').send(userWithoutPassword);
+      
+      chai.expect(response.status).to.equal(400);
+      chai.expect(response.body).to.have.property('message');
+      chai.expect(response.body).to.deep.equal({ message: 'All fields must be filled' });
+    });
+  });
