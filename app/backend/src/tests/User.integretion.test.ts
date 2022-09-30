@@ -3,3 +3,4 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 import * as Sinon from 'sinon';
 import { app } from '../app';
+chai.use(chaiHttp);
