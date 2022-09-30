@@ -103,3 +103,32 @@ describe('Rota de login', () => {
     });
   });
 });
+
+describe('Rota de login/validate', () => {
+
+  describe('GET com token de admin', () => {
+
+    const authorization = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJ1c2VybmFtZSI6IkFkbWluIiwicm9sZSI6ImFkbWluIn0sImlhdCI6MTY2NDU3MzkxNX0.tKDTIJZz4LQ0jlGhDNRCmRJ5wYXppq39vMGlMF9yz5w';
+
+    it('Deve retornar o status 200 e a role admin', async () => {
+      const response = await chai.request(app).get('/login/validate').set({ authorization });
+      
+      chai.expect(response.status).to.equal(200);
+      chai.expect(response.body).to.deep.equal({ role: 'admin' });
+    });
+
+  });
+
+  describe('GET com token de user', () => {
+
+    const authorization = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoyLCJ1c2VybmFtZSI6IlVzZXIiLCJyb2xlIjoidXNlciJ9LCJpYXQiOjE2NjQ1NzUzNDZ9.NH_kItsbhNiHsAc-GnuqMYIvZ2gFTmfBDZYyHzA9AQk';
+
+    it('Deve retornar o status 200 e a role user', async () => {
+      const response = await chai.request(app).get('/login/validate').set({ authorization });
+      
+      chai.expect(response.status).to.equal(200);
+      chai.expect(response.body).to.deep.equal({ role: 'user' });
+    });
+
+  });
+});
