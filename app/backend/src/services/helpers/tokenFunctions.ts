@@ -10,3 +10,12 @@ export default function generateToken(id: number, username: string, role: string
     .sign({ data: { id, username, role } }, secret, { algorithm: 'HS256' });
   return { token };
 }
+
+export function recoverUser(token: string): IPayloadJWT {
+  try {
+    const decodedInformation = jwt.verify(token, secret);
+    return decodedInformation as IPayloadJWT;
+  } catch (err) {
+    throw new Error('Token inválido!');
+  }
+}
