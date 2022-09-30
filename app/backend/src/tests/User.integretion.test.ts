@@ -76,3 +76,30 @@ describe('Rota de login', () => {
       chai.expect(response.body).to.deep.equal({ message: 'All fields must be filled' });
     });
   });
+
+  describe('POST se os dados enviados forem inválidos', () => {
+
+    before(() => {
+      Sinon.stub(User, 'findOne').resolves(undefined);
+    });
+
+    after(() => {
+      Sinon.restore();
+    });
+
+    it('Retornar erro de status 401 se o email ou senha forem inválidos', async () => {
+      const response = await chai.request(app).post('/login').send(fakeUser);
+      
+      chai.expect(response.status).to.equal(401);
+      chai.expect(response.body).to.have.property('message');
+      chai.expect(response.body).to.deep.equal({ message: 'Incorrect email or password' });
+    });
+
+    it('Retornar uma mensagem de erro se o email ou senha forem inválidos', async () => {
+      const response = await chai.request(app).post('/login').send(fakeUser);
+      
+      chai.expect(response.body).to.have.property('message');
+      chai.expect(response.body).to.deep.equal({ message: 'Incorrect email or password' });
+    });
+  });
+});
