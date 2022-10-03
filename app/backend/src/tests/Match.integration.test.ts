@@ -18,11 +18,11 @@ describe('Rota de partidas', () => {
     
     afterEach(() => sinon.restore());
     
-    it('Verifica se são retornados 40 partidas', async () => {
+    it('Verifica se são retornados 10 partidas', async () => {
       const response = await chai.request(app).get('/matches');
     
       chai.expect(response).to.have.status(200);
-      chai.expect(response.body).to.length(20);
+      chai.expect(response.body).to.length(10);
     });
     
     it('Verifica as partidas estão organizados por Id', async () => {
@@ -36,7 +36,7 @@ describe('Rota de partidas', () => {
     });
     
     it('Verifica se todos as partidas são retornadas corretamente', async () => {
-      const response = await chai.request(app).get('/teams');
+      const response = await chai.request(app).get('/matches');
     
       chai.expect(response).to.have.status(200);
       chai.expect(response.body).to.deep.equal(allMatches);
