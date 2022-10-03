@@ -76,7 +76,37 @@ describe('Rota de partidas', () => {
     });
   });
 
-  describe('GET para buscar partidas finalizads', () => {
+  describe('GET para buscar partidas finalizadas com query', () => {
+
+    beforeEach(async () => {
+      sinon.stub(Match, 'findAll').resolves(COLOCAR PARTIDAS FINALIZADAS as Match[]);
+    });
+    
+    afterEach(() => sinon.restore());
+    
+    it('Verifica se são retornados X partidas', async () => {
+      const response = await chai.request(app).get('/matches').query({inProgress: false });
+    
+      chai.expect(response).to.have.status(200);
+      chai.expect(response.body).to.length(X);
+    });
+    
+    it('Verifica as partidas estão organizados por Id', async () => {
+      const response = await chai.request(app).get('/matches').query({inProgress: false });
+    
+      chai.expect(response).to.have.status(200);
+    
+      response.body.forEach(({id}: {id: number}, i: number) => {
+        chai.expect(id).to.be.equal(i + 1);
+      });
+    });
+    
+    it('Verifica se todos as partidas são retornadas corretamente', async () => {
+      const response = await chai.request(app).get('/matches').query({inProgress: false });
+    
+      chai.expect(response).to.have.status(200);
+      chai.expect(response.body).to.deep.equal(COLOCAR PARTIDAS FINALIZADAS);
+    });
   });
 
   describe('POST para inserir partidas no banco de dados', () => {
