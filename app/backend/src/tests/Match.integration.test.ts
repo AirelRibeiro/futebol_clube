@@ -200,7 +200,7 @@ describe('Rota de partidas', () => {
         const response = await chai.request(app).patch('/matches/23/finish').set(COLOCAQR AQUI TOKEN VÁLIDO).send(validMatch);
 
         chai.expect(response.body).to.have.property('message');
-        chai.expect(response.body).to.deep.equal({ message: 'Token must be a valid token' });
+        chai.expect(response.body).to.deep.equal({ message: 'Finished' });
       });
 
     });    
