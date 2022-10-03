@@ -19,7 +19,7 @@ module.exports = {
         onDelete: 'CASCADE',
         references: {
           model: 'teams',
-          key: id
+          key: 'id'
         }
       },
       home_team_goals: {
@@ -33,7 +33,7 @@ module.exports = {
         onDelete: 'CASCADE',
         references: {
           model: 'teams',
-          key: id
+          key: 'id'
         }
       },
       away_team_goals: {
