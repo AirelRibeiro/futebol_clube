@@ -206,5 +206,22 @@ describe('Rota de partidas', () => {
   });
 
   describe('PATCH para atualizar partidas por Id', () => {
+
+    describe('Testa que é possível alterar a quantidade de gols de uma partida', () => {
+
+      it('Verifica se o status de retorno é 200', async () => {
+        const response = await chai.request(app).patch('/matches/14').set(COLOCAQR AQUI TOKEN VÀLIDO).send(OBJETO COM GOLS DE CADA TIME);
+      
+        chai.expect(response.status).to.be.equal(200);
+      });
+
+      it('Verifica se o corpo da resposta possui a mensagem correta', async () => {
+        const response = await chai.request(app).patch('/matches/14').set(COLOCAQR AQUI TOKEN VÁLIDO).send(OBJETO COM GOLS DE CADA TIME);
+
+        chai.expect(response.body).to.have.property('message');
+        chai.expect(response.body).to.deep.equal({ message: 'Goals count changed successfully!' });
+      });
+
+    });
   });
 });
