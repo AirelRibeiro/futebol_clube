@@ -15,10 +15,10 @@ const allTeams = [
     { id: 14, teamName: 'Sparkling Platypuses' },
     { id: 15, teamName: 'Rainbow Prime' },
     { id: 16, teamName: 'Baby Bolinho' },
-    { id: 16, teamName: 'Cute Bunnies' },
-    { id: 16, teamName: 'Flying High' },
-    { id: 16, teamName: 'Sparkling' },
-    { id: 16, teamName: 'The Platypuses' },
+    { id: 17, teamName: 'Cute Bunnies' },
+    { id: 18, teamName: 'Flying High' },
+    { id: 19, teamName: 'Sparkling' },
+    { id: 20, teamName: 'The Platypuses' },
   ];
 
 const singleTeam = { id: 14, teamName: 'Sparkling Platypuses' }
