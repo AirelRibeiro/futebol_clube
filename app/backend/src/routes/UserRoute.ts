@@ -4,6 +4,8 @@ import UserService from '../services/User.service';
 import UserController from '../controllers/UserController.controller';
 import loginVAlidation from '../middlewares/loginValidation';
 
+require('express-async-errors');
+
 const usersRoute = express.Router();
 
 const userController = new UserController(new UserService(User));

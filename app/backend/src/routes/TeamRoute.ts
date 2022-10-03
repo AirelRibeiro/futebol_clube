@@ -1,0 +1,1 @@
+require('express-async-errors');
