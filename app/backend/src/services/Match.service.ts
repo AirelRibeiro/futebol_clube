@@ -30,6 +30,10 @@ class MatchService {
       .then(() => ({ message: 'Finished' }));
   }
 
+  updateGoals(id: number, hTG: number, aTG: number): object {
+    return this.matchModel.update({ homeTeamGoals: hTG, awayTeamGoals: aTG }, { where: { id } })
+      .then(() => ({ message: 'Updated match goals' }));
+  }
 }
 
 export default MatchService;
