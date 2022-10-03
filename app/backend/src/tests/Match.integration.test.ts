@@ -51,7 +51,8 @@ describe('Rota de partidas', () => {
 
   describe('POST para inserir partidas no banco de dados', () => {
 
-    describe('Testa que não é possível inserir partida com times iguais', () => {
+
+    describe('Testa que não é possível inserir partida com times que não existem', () => {
 
       it('Verifica se o status de retorno é 401', async () => {
         const response = await chai.request(app).post('/matches').set(COLOCAQR AQUI TOKEN VÀLIDO).send(fakeMatches);
@@ -59,11 +60,11 @@ describe('Rota de partidas', () => {
         chai.expect(response.status).to.equal(401);
       });
 
-      it('Verifica se o corpo da resposta possui uma mensagem de erro', async () => {
-        const response = await chai.request(app).post('/matches').set(COLOCAQR AQUI TOKEN VÀLIDO).send(fakeMatches);
+      it('Verifica se o corpo da tesposta possui uma mensagem de erro', async () => {
+        const response = await chai.request(app).post('/matches').set(COLOCAQR AQUI TOKEN INVÁLIDO).send(fakeMatches);
       
         chai.expect(response.body).to.have.property('message');
-        chai.expect(response.body).to.deep.equal({ message: 'It is not possible to create a match with two equal teams' });
+        chai.expect(response.body).to.deep.equal({ message: 'Token must be a valid token' });
       });
     });
   });
