@@ -186,6 +186,23 @@ describe('Rota de partidas', () => {
   });
 
   describe('PATCH para atualizar prograsso das partidas por Id na rota "/matches/id/finish"', () => {
+
+    describe('Testa que é possível alterar o estado de progresso das partidas', () => {
+
+      it('Verifica se o status de retorno é 200', async () => {
+        const response = await chai.request(app).patch('/matches/23/finish').set(COLOCAQR AQUI TOKEN VÀLIDO).send(validMatch);
+      
+        chai.expect(response.status).to.be.equal(200);
+      });
+
+      it('Verifica se o corpo da resposta possui a mensagem correta', async () => {
+        const response = await chai.request(app).patch('/matches/23/finish').set(COLOCAQR AQUI TOKEN VÁLIDO).send(validMatch);
+
+        chai.expect(response.body).to.have.property('message');
+        chai.expect(response.body).to.deep.equal({ message: 'Token must be a valid token' });
+      });
+
+    });    
   });
 
   describe('PATCH para atualizar partidas por Id', () => {
