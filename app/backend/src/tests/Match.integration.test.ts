@@ -3,7 +3,7 @@ import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
 import { app } from '../app';
-import { allMatches } from './mocks/matches.mock';
+import { allMatches, inProgressMatches, finishedMatches } from './mocks/matches.mock';
 import Match from '../database/models/MatchModel';
 
 chai.use(chaiHttp);
@@ -46,25 +46,26 @@ describe('Rota de partidas', () => {
   describe('GET para buscar partidas em andamento com query', () => {
 
     beforeEach(async () => {
-      sinon.stub(Match, 'findAll').resolves(COLOCAR PARTIDAS EM ANDAMENTO as Match[]);
+      sinon.stub(Match, 'findAll').resolves(inProgressMatches as Match[]);
     });
     
     afterEach(() => sinon.restore());
     
-    it('Verifica se são retornados X partidas', async () => {
+    it('Verifica se são retornados 3 partidas', async () => {
       const response = await chai.request(app).get('/matches').query({inProgress: true });
     
       chai.expect(response).to.have.status(200);
-      chai.expect(response.body).to.length(X);
+      chai.expect(response.body).to.length(3);
     });
     
-    it('Verifica as partidas estão organizados por Id', async () => {
-      const response = await chai.request(app).get('/matches').query({inProgress: truncateSync });
+    it('Verifica se as partidas possuem as propriedades corretas', async () => {
+      const response = await chai.request(app).get('/matches').query({inProgress: true });
     
       chai.expect(response).to.have.status(200);
-    
-      response.body.forEach(({id}: {id: number}, i: number) => {
-        chai.expect(id).to.be.equal(i + 1);
+      ['id', 'homeTeam', 'homeTeamGoals', 'awayTeam', 'awayTeamGoals', 'inProgress', 'teamHome', 'teamAway'].forEach((property) => {
+        it(`Existe a propriedade ${property}`, () => {
+          chai.expect(response.body).to.have.property(property);
+        });
       });
     });
     
@@ -72,40 +73,40 @@ describe('Rota de partidas', () => {
       const response = await chai.request(app).get('/matches').query({inProgress: true });
     
       chai.expect(response).to.have.status(200);
-      chai.expect(response.body).to.deep.equal(COLOCAR PARTIDAS EM PROGRESSO);
+      chai.expect(response.body).to.deep.equal(inProgressMatches);
     });
   });
 
   describe('GET para buscar partidas finalizadas com query', () => {
 
     beforeEach(async () => {
-      sinon.stub(Match, 'findAll').resolves(COLOCAR PARTIDAS FINALIZADAS as Match[]);
+      sinon.stub(Match, 'findAll').resolves(finishedMatches as Match[]);
     });
     
     afterEach(() => sinon.restore());
     
-    it('Verifica se são retornados X partidas', async () => {
+    it('Verifica se são retornados 7 partidas', async () => {
       const response = await chai.request(app).get('/matches').query({inProgress: false });
     
       chai.expect(response).to.have.status(200);
-      chai.expect(response.body).to.length(X);
+      chai.expect(response.body).to.length(7);
     });
     
-    it('Verifica as partidas estão organizados por Id', async () => {
+    it('Verifica se as partidas tem as propriedades corretas', async () => {
       const response = await chai.request(app).get('/matches').query({inProgress: false });
     
       chai.expect(response).to.have.status(200);
-    
-      response.body.forEach(({id}: {id: number}, i: number) => {
-        chai.expect(id).to.be.equal(i + 1);
-      });
+      ['id', 'homeTeam', 'homeTeamGoals', 'awayTeam', 'awayTeamGoals', 'inProgress', 'teamHome', 'teamAway'].forEach((property) => {
+        it(`Existe a propriedade ${property}`, () => {
+          chai.expect(response.body).to.have.property(property);
+        });
     });
     
     it('Verifica se todos as partidas são retornadas corretamente', async () => {
       const response = await chai.request(app).get('/matches').query({inProgress: false });
     
       chai.expect(response).to.have.status(200);
-      chai.expect(response.body).to.deep.equal(COLOCAR PARTIDAS FINALIZADAS);
+      chai.expect(response.body).to.deep.equal(finishedMatches);
     });
   });
 
