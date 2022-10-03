@@ -11,7 +11,8 @@ class MatchController {
       const matches = await this.matchService.findAll();
       return res.status(200).json(matches);
     }
-    const matches = await this.matchService.findAllWithQuery(Boolean(inProgress));
+    const progress = inProgress === 'true';
+    const matches = await this.matchService.findAllWithQuery(progress);
     return res.status(200).json(matches);
   }
 
