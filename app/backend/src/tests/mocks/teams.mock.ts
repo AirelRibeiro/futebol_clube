@@ -14,7 +14,7 @@ const allTeams = [
     { id: 13, teamName: 'Autumn Team' },
     { id: 14, teamName: 'Sparkling Platypuses' },
     { id: 15, teamName: 'Rainbow Prime' },
-    { id: 16, teamName: 'Truffle Chocolate' },
+    { id: 16, teamName: 'Baby Bolinho' },
     { id: 16, teamName: 'Cute Bunnies' },
     { id: 16, teamName: 'Flying High' },
     { id: 16, teamName: 'Sparkling' },
