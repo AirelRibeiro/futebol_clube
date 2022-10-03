@@ -24,6 +24,12 @@ class MatchService {
     });
     return matches;
   }
+
+  updateProgress(id: number): object {
+    return this.matchModel.update({ inProgress: false }, { where: { id } })
+      .then(() => ({ message: 'Finished' }));
+  }
+
 }
 
 export default MatchService;
