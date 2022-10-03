@@ -67,6 +67,31 @@ describe('Rota de partidas', () => {
         chai.expect(response.body).to.deep.equal({ message: 'Token must be a valid token' });
       });
     });
+
+    describe('Testa que é possível inserir uma partida com os dados corretos', () => {
+
+      it('Verifica se o status de retorno é 201', async () => {
+        const response = await chai.request(app).post('/matches').set(COLOCAQR AQUI TOKEN VÀLIDO).send(validMatch);
+      
+        chai.expect(response.status).to.be.equal(201);
+      });
+
+      it('Verifica se o corpo da resposta possui as propriedades corretas', async () => {
+        const response = await chai.request(app).post('/matches').set(COLOCAQR AQUI TOKEN VÁLIDO).send(validMatch);
+
+        ['id', 'homeTeam', 'homeTeamGoals', 'awayTeam', 'awayTeamGoals', 'inProgress'].forEach((property) => {
+          it(`Existe a propriedade ${property}`, () => {
+            chai.expect(response.body).to.have.property(property);
+          });
+        });
+      });
+
+      it('Verifica se são retornados os dados da partida inserida', async () => {
+        const response = await chai.request(app).post('/matches').set(COLOCAQR AQUI TOKEN VÁLIDO).send(validMatch);
+
+        chai.expect(response.body).to.deep.equal(validMatch);
+      });
+    });
   });
 
   describe('PATCH para atualizar prograsso das partidas por Id na rota "/matches/id/finish"', () => {
