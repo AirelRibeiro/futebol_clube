@@ -43,7 +43,37 @@ describe('Rota de partidas', () => {
     });
   });
 
-  describe('GET para buscar partidas em andamento', () => {
+  describe('GET para buscar partidas em andamento com query', () => {
+
+    beforeEach(async () => {
+      sinon.stub(Match, 'findAll').resolves(COLOCAR PARTIDAS EM ANDAMENTO as Match[]);
+    });
+    
+    afterEach(() => sinon.restore());
+    
+    it('Verifica se são retornados X partidas', async () => {
+      const response = await chai.request(app).get('/matches').query({inProgress: true });
+    
+      chai.expect(response).to.have.status(200);
+      chai.expect(response.body).to.length(X);
+    });
+    
+    it('Verifica as partidas estão organizados por Id', async () => {
+      const response = await chai.request(app).get('/matches').query({inProgress: truncateSync });
+    
+      chai.expect(response).to.have.status(200);
+    
+      response.body.forEach(({id}: {id: number}, i: number) => {
+        chai.expect(id).to.be.equal(i + 1);
+      });
+    });
+    
+    it('Verifica se todos as partidas são retornadas corretamente', async () => {
+      const response = await chai.request(app).get('/matches').query({inProgress: true });
+    
+      chai.expect(response).to.have.status(200);
+      chai.expect(response.body).to.deep.equal(COLOCAR PARTIDAS EM PROGRESSO);
+    });
   });
 
   describe('GET para buscar partidas finalizads', () => {
