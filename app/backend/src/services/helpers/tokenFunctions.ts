@@ -16,6 +16,6 @@ export function recoverUser(token: string): IPayloadJWT {
     const decodedInformation = jwt.verify(token, secret);
     return decodedInformation as IPayloadJWT;
   } catch (err) {
-    throw new Error('Token inválido!');
+    throw new Error('invalidToken');
   }
 }
