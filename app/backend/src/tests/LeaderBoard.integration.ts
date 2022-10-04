@@ -11,3 +11,28 @@ import { allTeams } from './mocks/teams.mock';
 
 chai.use(chaiHttp);
 
+describe('Rota de leaderboard', () => {
+
+  describe('GET para listar a classificação dos times', () => {
+
+    beforeEach(async () => {
+      Sinon.stub(Team, 'findAll').resolves(allTeams as Team[]);
+      Sinon.stub(Match, 'findAll').resolves(finishedMatches as Match[]);
+    });
+    
+    afterEach(() => Sinon.restore());
+
+    it('Verifica se é retornado o número correto de times', async () => {
+
+    });
+
+    it('Verifica se o código de status é 200', async () => {
+
+    });
+
+    it('Verifica se os times estão na ordem correta', async () => {
+
+    });
+  });
+});
+
