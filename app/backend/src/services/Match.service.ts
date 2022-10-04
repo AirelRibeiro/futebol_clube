@@ -1,5 +1,7 @@
+// import IMatch from 'src/interfaces/IMatch.interface';
 import Team from '../database/models/TeamModel';
 import Match from '../database/models/MatchModel';
+import checkExistence from './helpers/verificationFunctions';
 
 class MatchService {
   constructor(private matchModel: typeof Match) {}
@@ -25,14 +27,21 @@ class MatchService {
     return matches;
   }
 
-  updateProgress(id: number): object {
+  async updateProgress(id: number): Promise<object> {
     return this.matchModel.update({ inProgress: false }, { where: { id } })
       .then(() => ({ message: 'Finished' }));
   }
 
-  updateGoals(id: number, hTG: number, aTG: number): object {
+  async updateGoals(id: number, hTG: number, aTG: number): Promise<object> {
     return this.matchModel.update({ homeTeamGoals: hTG, awayTeamGoals: aTG }, { where: { id } })
-      .then(() => ({ message: 'Updated match goals' }));
+      .then(() => ({ message: 'Goals count changed successfully!' }));
+  }
+
+  async insertMatch(match: Match): Promise<Match> {
+    const timeExists = await checkExistence([match.homeTeam, match.awayTeam]);
+    if (!timeExists) throw new Error('teamNotFound');
+    const createdMatch = await this.matchModel.create(match);
+    return createdMatch;
   }
 }
 
