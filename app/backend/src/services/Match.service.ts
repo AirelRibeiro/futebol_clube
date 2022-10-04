@@ -1,4 +1,3 @@
-// import IMatch from 'src/interfaces/IMatch.interface';
 import Team from '../database/models/TeamModel';
 import Match from '../database/models/MatchModel';
 import checkExistence from './helpers/verificationFunctions';
