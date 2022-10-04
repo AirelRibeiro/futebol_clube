@@ -31,6 +31,12 @@ class MatchController {
 
     return res.status(200).json(message);
   }
+
+  async insertMatch(req: Request, res: Response): Promise<Response> {
+    const match = await this.matchService.insertMatch(req.body);
+
+    return res.status(201).json(match);
+  }
 }
 
 export default MatchController;
