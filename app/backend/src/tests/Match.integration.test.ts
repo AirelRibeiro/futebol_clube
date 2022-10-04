@@ -5,6 +5,7 @@ import chaiHttp = require('chai-http');
 import { app } from '../app';
 import { allMatches, inProgressMatches, finishedMatches } from './mocks/matches.mock';
 import Match from '../database/models/MatchModel';
+import Team from '../database/models/TeamModel';
 
 chai.use(chaiHttp);
 
@@ -109,19 +110,22 @@ describe('Rota de partidas', () => {
       chai.expect(response.body).to.deep.equal(finishedMatches);
     });
   });
+  });
 
   describe('POST para inserir partidas no banco de dados', () => {
     
     describe('Testa que não é possível inserir partida com token inválido', () => {
 
+      const authorization = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJ1c2VybmFtZI6IkFkbWluIiwicm9sZSI6ImFkbWluIn0sImlhdCI6MTY2NDU3MzkxNX0.tKDTIJZz4LQ0jlGhDNRCmRJ5wYXppq39vMGlMF9yz5w'
+
       it('Verifica se o status de retorno é 401', async () => {
-        const response = await chai.request(app).post('/matches').set(COLOCAQR AQUI TOKEN INVÁLIDO);
+        const response = await chai.request(app).post('/matches').set({ authorization });
       
         chai.expect(response.status).to.equal(401);
       });
 
       it('Verifica se o corpo da tesposta possui uma mensagem de erro', async () => {
-        const response = await chai.request(app).post('/matches').set(COLOCAQR AQUI TOKEN INVÁLIDO);
+        const response = await chai.request(app).post('/matches').set({ authorization });
       
         chai.expect(response.body).to.have.property('message');
         chai.expect(response.body).to.deep.equal({ message: 'Token must be a valid token' });
@@ -130,14 +134,24 @@ describe('Rota de partidas', () => {
 
     describe('Testa que não é possível inserir partida com times iguais', () => {
 
+      const fakeMatch = {
+        homeTeam: 16,
+        homeTeamGoals: 2,
+        awayTeam: 16,
+        awayTeamGoals: 2,
+        inProgress: true,
+      }
+
+      const authorization = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJ1c2VybmFtZSI6IkFkbWluIiwicm9sZSI6ImFkbWluIn0sImlhdCI6MTY2NDU3MzkxNX0.tKDTIJZz4LQ0jlGhDNRCmRJ5wYXppq39vMGlMF9yz5w'
+
       it('Verifica se o status de retorno é 401', async () => {
-        const response = await chai.request(app).post('/matches').set(COLOCAQR AQUI TOKEN VÀLIDO).send(fakeMatches);
+        const response = await chai.request(app).post('/matches').set({ authorization }).send(fakeMatch);
       
         chai.expect(response.status).to.equal(401);
       });
 
       it('Verifica se o corpo da resposta possui uma mensagem de erro', async () => {
-        const response = await chai.request(app).post('/matches').set(COLOCAQR AQUI TOKEN VÀLIDO).send(fakeMatches);
+        const response = await chai.request(app).post('/matches').set({ authorization }).send(fakeMatch);
       
         chai.expect(response.body).to.have.property('message');
         chai.expect(response.body).to.deep.equal({ message: 'It is not possible to create a match with two equal teams' });
@@ -146,30 +160,62 @@ describe('Rota de partidas', () => {
 
     describe('Testa que não é possível inserir partida com times que não existem', () => {
 
-      it('Verifica se o status de retorno é 401', async () => {
-        const response = await chai.request(app).post('/matches').set(COLOCAQR AQUI TOKEN VÀLIDO).send(fakeMatches);
+      const fakeMatch = {
+        homeTeam: 120,
+        homeTeamGoals: 2,
+        awayTeam: 106,
+        awayTeamGoals: 2,
+        inProgress: true,
+      }
+
+      const authorization = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJ1c2VybmFtZSI6IkFkbWluIiwicm9sZSI6ImFkbWluIn0sImlhdCI6MTY2NDU3MzkxNX0.tKDTIJZz4LQ0jlGhDNRCmRJ5wYXppq39vMGlMF9yz5w'
+
+      beforeEach(async () => {
+        sinon.stub(Team, 'findAll').resolves([]);
+      });
       
-        chai.expect(response.status).to.equal(401);
+      afterEach(() => sinon.restore());
+
+      it('Verifica se o status de retorno é 404', async () => {
+        const response = await chai.request(app).post('/matches').set({ authorization }).send(fakeMatch);
+      
+        chai.expect(response.status).to.equal(404);
       });
 
       it('Verifica se o corpo da tesposta possui uma mensagem de erro', async () => {
-        const response = await chai.request(app).post('/matches').set(COLOCAQR AQUI TOKEN INVÁLIDO).send(fakeMatches);
+        const response = await chai.request(app).post('/matches').set({ authorization }).send(fakeMatch);
       
         chai.expect(response.body).to.have.property('message');
-        chai.expect(response.body).to.deep.equal({ message: 'Token must be a valid token' });
+        chai.expect(response.body).to.deep.equal({ message: 'There is no team with such id!' });
       });
     });
 
     describe('Testa que é possível inserir uma partida com os dados corretos', () => {
 
+      const validMatch = {
+        homeTeam: 12,
+        homeTeamGoals: 2,
+        awayTeam: 14,
+        awayTeamGoals: 9,
+        inProgress: true,
+      }
+
+      const authorization = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJ1c2VybmFtZSI6IkFkbWluIiwicm9sZSI6ImFkbWluIn0sImlhdCI6MTY2NDU3MzkxNX0.tKDTIJZz4LQ0jlGhDNRCmRJ5wYXppq39vMGlMF9yz5w'
+
+      beforeEach(async () => {
+        sinon.stub(Match, 'create').resolves({id: 11, ...validMatch} as Match);
+      });
+      
+      afterEach(() => sinon.restore());
+
       it('Verifica se o status de retorno é 201', async () => {
-        const response = await chai.request(app).post('/matches').set(COLOCAQR AQUI TOKEN VÀLIDO).send(validMatch);
+        const response = await chai.request(app).post('/matches').set({ authorization }).send(validMatch);
       
         chai.expect(response.status).to.be.equal(201);
       });
 
       it('Verifica se o corpo da resposta possui as propriedades corretas', async () => {
-        const response = await chai.request(app).post('/matches').set(COLOCAQR AQUI TOKEN VÁLIDO).send(validMatch);
+        const response = await chai.request(app).post('/matches').set({ authorization }).send(validMatch);
 
         ['id', 'homeTeam', 'homeTeamGoals', 'awayTeam', 'awayTeamGoals', 'inProgress'].forEach((property) => {
           it(`Existe a propriedade ${property}`, () => {
@@ -179,9 +225,9 @@ describe('Rota de partidas', () => {
       });
 
       it('Verifica se são retornados os dados da partida inserida', async () => {
-        const response = await chai.request(app).post('/matches').set(COLOCAQR AQUI TOKEN VÁLIDO).send(validMatch);
+        const response = await chai.request(app).post('/matches').set({ authorization }).send(validMatch);
 
-        chai.expect(response.body).to.deep.equal(validMatch);
+        chai.expect(response.body).to.deep.equal({id: 11, ...validMatch});
       });
     });
   });
@@ -190,14 +236,20 @@ describe('Rota de partidas', () => {
 
     describe('Testa que é possível alterar o estado de progresso das partidas', () => {
 
+      beforeEach(async () => {
+        sinon.stub(Match, 'update').resolves();
+      });
+      
+      afterEach(() => sinon.restore());
+
       it('Verifica se o status de retorno é 200', async () => {
-        const response = await chai.request(app).patch('/matches/23/finish').set(COLOCAQR AQUI TOKEN VÀLIDO).send(validMatch);
+        const response = await chai.request(app).patch('/matches/23/finish');
       
         chai.expect(response.status).to.be.equal(200);
       });
 
       it('Verifica se o corpo da resposta possui a mensagem correta', async () => {
-        const response = await chai.request(app).patch('/matches/23/finish').set(COLOCAQR AQUI TOKEN VÁLIDO).send(validMatch);
+        const response = await chai.request(app).patch('/matches/23/finish');
 
         chai.expect(response.body).to.have.property('message');
         chai.expect(response.body).to.deep.equal({ message: 'Finished' });
@@ -210,14 +262,20 @@ describe('Rota de partidas', () => {
 
     describe('Testa que é possível alterar a quantidade de gols de uma partida', () => {
 
+      beforeEach(async () => {
+        sinon.stub(Match, 'update').resolves();
+      });
+      
+      afterEach(() => sinon.restore());
+
       it('Verifica se o status de retorno é 200', async () => {
-        const response = await chai.request(app).patch('/matches/14').set(COLOCAQR AQUI TOKEN VÀLIDO).send(OBJETO COM GOLS DE CADA TIME);
+        const response = await chai.request(app).patch('/matches/14');
       
         chai.expect(response.status).to.be.equal(200);
       });
 
       it('Verifica se o corpo da resposta possui a mensagem correta', async () => {
-        const response = await chai.request(app).patch('/matches/14').set(COLOCAQR AQUI TOKEN VÁLIDO).send(OBJETO COM GOLS DE CADA TIME);
+        const response = await chai.request(app).patch('/matches/14');
 
         chai.expect(response.body).to.have.property('message');
         chai.expect(response.body).to.deep.equal({ message: 'Goals count changed successfully!' });
