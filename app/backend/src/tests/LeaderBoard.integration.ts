@@ -7,3 +7,7 @@ import Match from '../database/models/MatchModel';
 import Team from '../database/models/TeamModel';
 import { finishedMatches } from './mocks/matches.mock';
 import { allTeams } from './mocks/teams.mock';
+
+
+chai.use(chaiHttp);
+
