@@ -18,7 +18,7 @@ class MatchController {
 
   async updateInProgress(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
-    const message = this.matchService.updateProgress(Number(id));
+    const message = await this.matchService.updateProgress(Number(id));
 
     return res.status(200).json(message);
   }
@@ -26,7 +26,7 @@ class MatchController {
   async updateGoals(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
     const { homeTeamGoals, awayTeamGoals } = req.body;
-    const message = this.matchService
+    const message = await this.matchService
       .updateGoals(Number(id), Number(homeTeamGoals), Number(awayTeamGoals));
 
     return res.status(200).json(message);
