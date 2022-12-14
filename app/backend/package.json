@@ -58,9 +58,10 @@
     "express": "4.17.1",
     "express-async-errors": "^3.1.1",
     "jest": "27.4.3",
-    "joi": "^17.6.2",
+    "joi": "^17.7.0",
     "jsonwebtoken": "8.5.1",
     "mysql2": "2.3.3",
+    "pg": "^8.8.0",
     "sequelize": "6.9.0",
     "sequelize-test-helpers": "^1.4.3"
   }
