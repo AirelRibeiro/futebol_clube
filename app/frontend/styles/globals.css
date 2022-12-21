@@ -3,10 +3,12 @@
 @tailwind utilities;
 @layer base {
   html {
-    color-scheme: dark;
+    @apply h-full bg-gray-50;
   }
   body {
-    color: white;
-    background: black;
+    @apply h-full;
+  }
+  #__next {
+    @apply flex h-full flex-col;
   }
 }
