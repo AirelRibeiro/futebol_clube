@@ -8,3 +8,10 @@ export async function requestLogin(user: IUser) {
   );
   return data;
 }
+
+export async function requestLeaderboard() {
+  const { data } = await axios.get(
+    'https://futebolclube-production.up.railway.app/leaderboard'
+  );
+  return data;
+}
