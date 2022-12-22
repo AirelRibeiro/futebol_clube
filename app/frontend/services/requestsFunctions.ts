@@ -9,9 +9,13 @@ export async function requestLogin(user: IUser) {
   return data;
 }
 
-export async function requestLeaderboard() {
+export async function requestLeaderboard(endpoint: string) {
   const { data } = await axios.get(
-    'https://futebolclube-production.up.railway.app/leaderboard'
+    `https://futebolclube-production.up.railway.app/leaderboard${endpoint}`
+  );
+  return data;
+}
+
   );
   return data;
 }
