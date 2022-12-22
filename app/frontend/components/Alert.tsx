@@ -1,5 +1,5 @@
 import { XMarkIcon } from '@heroicons/react/24/solid';
-import IAlertProps from '../interfaces/IAlertProps';
+import IAlertProps from '../interfaces/IAlertProps.interface';
 
 export default function Alert({ message, closeAlert }: IAlertProps) {
   return (
