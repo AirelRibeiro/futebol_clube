@@ -16,6 +16,13 @@ export async function requestLeaderboard(endpoint: string) {
   return data;
 }
 
+export async function requestTeams() {
+  const { data } = await axios.get(
+    'https://futebolclube-production.up.railway.app/teams'
+  );
+  return data;
+}
+
   );
   return data;
 }
