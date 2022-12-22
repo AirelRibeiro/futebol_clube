@@ -103,7 +103,8 @@ function Login() {
                     />
                   </div>
                 </div>
-
+                {/* TODO - Funcionalidade a ser implementada no backend */}
+                {/*                 
                 <div className="flex items-center justify-between">
                   <div className="text-sm">
                     <Link
@@ -114,7 +115,7 @@ function Login() {
                       Ainda não possui conta? Registre-se!{' '}
                     </Link>
                   </div>
-                </div>
+                </div> */}
 
                 <div>
                   <button
