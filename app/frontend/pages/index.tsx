@@ -5,7 +5,9 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    router.push('/users/login');
+    const token = localStorage.getItem('token');
+    if (!token) router.push('/users/login');
+    router.push('/leaderboard');
   }, [router]);
   return;
 }
