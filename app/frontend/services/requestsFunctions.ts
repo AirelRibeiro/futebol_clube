@@ -23,6 +23,9 @@ export async function requestTeams() {
   return data;
 }
 
+export async function requestMatches(endpoint: string) {
+  const { data } = await axios.get(
+    `https://futebolclube-production.up.railway.app/matches${endpoint}`
   );
   return data;
 }
